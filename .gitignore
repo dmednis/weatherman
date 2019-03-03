@@ -1,2 +1,4 @@
 node_modules
-.IDEA
+.idea
+config/*
+!config/example.js
