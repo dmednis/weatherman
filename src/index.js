@@ -11,18 +11,20 @@ const app = new Koa();
 app.use(bodyParser());
 
 
-function insertReading(value) {
-    db('readings').insert({value})
+function insertReading(sensor, value) {
+    db('readings').insert({sensor, value})
         .returning('*')
         .then(() => console.log("inserted"));
 }
 
 app.use(async ctx => {
-    console.log(ctx.request.url);
-    console.log(ctx.request.method);
-    console.log(ctx.request.body);
-    if (ctx.request.body.value) {
-        insertReading(ctx.request.body.value);
+    const {url, method, body} = ctx.request;
+    console.log(url);
+    console.log(method);
+    console.log(body);
+    const {value, sensor} = body;
+    if (value && sensor) {
+        insertReading(sensor, value);
     }
     ctx.body = 'Hello World';
 });
